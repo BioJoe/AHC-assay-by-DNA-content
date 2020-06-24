@@ -1,4 +1,4 @@
-macro "Joes nucID Action Tool - C606 O02gf V2477 T0206I " {
+macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 
 	//load image stack
 	path = File.openDialog("Select a .czi image stack file");
@@ -131,7 +131,7 @@ macro "Joes nucID Action Tool - C606 O02gf V2477 T0206I " {
 	run("Close");
 }
 
-macro "Measure DNA content Action Tool - C606 O02gf V2477 T0206M " {
+macro "measure DNA content Action Tool - C606 O02gf V2477 T0206M " {
 
 	//ask for file
 	path = File.openDialog("select MIP");
@@ -191,7 +191,7 @@ macro "Measure DNA content Action Tool - C606 O02gf V2477 T0206M " {
 	exit();
 }
 
-macro "Measure DNA content in subfolders Action Tool - C606 O02gf V2477 T0206M T9206a Td206l Tf206l" {
+macro "measure DNA content in subfolders Action Tool - C606 O02gf V2477 T0206M T9206a Td206l Tf206l" {
 
 	//choose directory
 	dir_o=getDirectory("Choose a Directory");
