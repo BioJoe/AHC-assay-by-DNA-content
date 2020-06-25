@@ -19,16 +19,16 @@ df_cells = pd.read_excel(file_path, index_col=None)
 
 #define genotypes to be plotted
 ls_gt = list(df_cells.genotype.unique())
-data = df_cells.drop_duplicates(subset=['genotype','ImageNumber'], keep='first', inplace=False)
+data = df_cells.drop_duplicates(subset=['genotype','CystNumber'], keep='first', inplace=False)
 
 #define plot
 plt.figure(figsize=(4,6))
 ax = plt.subplot(1,1,1)
 ax.set_title('DNA content variation per cyst')
 #add columns to plot
-sns.barplot(x="genotype", y="img_stdev", data=data, errwidth=1, capsize=0.3, color="white", ci="sd", linewidth=1, edgecolor="black", order = ls_gt)
+sns.barplot(x="genotype", y="cyst_stdev", data=data, errwidth=1, capsize=0.3, color="white", ci="sd", linewidth=1, edgecolor="black", order = ls_gt)
 #add datapoints to plot
-sns.stripplot(x="genotype", y="img_stdev", data=data, jitter=True, color="green", size=4, linewidth=0, order = ls_gt)
+sns.stripplot(x="genotype", y="cyst_stdev", data=data, jitter=True, color="green", size=4, linewidth=0, order = ls_gt)
 
 # create plot
 plt.xticks(rotation=90)

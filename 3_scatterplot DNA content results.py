@@ -6,12 +6,12 @@ import numpy as n
 import pandas as pd
 import matplotlib.pyplot as plt
 
-#add image standard deviation on plot?
+#add cyst standard deviation on plot?
 stdev_on_plot = True
 #add genotype standard deviation in header?
 stdev_in_head = True
-#add image number to plot?
-imagenumber_in_plot = True
+#add cyst number to plot?
+cystnumber_in_plot = True
 
 #required for the dialog box
 root = tk.Tk()
@@ -45,13 +45,13 @@ for gt in ls_gt:
     #select values to plot
     df_gt = df_cells.loc[df_cells['genotype']==gt]
     #sort cysts according to standard deviation
-    df_gt = df_gt.sort_values('img_stdev', ascending = True)
+    df_gt = df_gt.sort_values('cyst_stdev', ascending = True)
     x = range(0,len(df_gt))
     y = df_gt['norm signal'].values
     #give alternate colors to cells from different cysts
-    color = ["black","red"]*len(df_gt['ImageNumber'].unique())
-    for image in df_gt['ImageNumber'].unique():
-        df_gt.loc[df_gt['ImageNumber'] == image, "color"] = color[0]
+    color = ["black","red"]*len(df_gt['CystNumber'].unique())
+    for cyst in df_gt['CystNumber'].unique():
+        df_gt.loc[df_gt['CystNumber'] == cyst, "color"] = color[0]
         color.pop(0)
     c = df_gt["color"].values
     
@@ -65,22 +65,22 @@ for gt in ls_gt:
     
     #add standard deviation to the plot titles
     if stdev_in_head:
-        gt_stdev = df_gt.loc[(df_gt['genotype'] == gt) & (df_gt['ObjectNumber'] == 1), 'mean_img_stdev'].values[0]
+        gt_stdev = df_gt.loc[(df_gt['genotype'] == gt) & (df_gt['ObjectNumber'] == 1), 'mean_cyst_stdev'].values[0]
         plt.title(gt + " (stdev: " + str(round(gt_stdev,2)) + ')')
         
-    #add image labels to plot
-    if imagenumber_in_plot:
-        for image in df_gt['ImageNumber'].unique():
+    #add cyst labels to plot
+    if cystnumber_in_plot:
+        for cyst in df_gt['CystNumber'].unique():
             df_gt = df_gt.reset_index(drop=True)
-            the_middle = len(df_gt[df_gt.ImageNumber == image].index)/2
-            the_x = df_gt[df_gt.ImageNumber == image].index[int(the_middle)]
-            plt.text(the_x, 0.1, image, fontsize=5)
+            the_middle = len(df_gt[df_gt.CystNumber == cyst].index)/2
+            the_x = df_gt[df_gt.CystNumber == cyst].index[int(the_middle)]
+            plt.text(the_x, 0.1, cyst, fontsize=5)
 
     #add standard deviation as grey lines to plot
     if stdev_on_plot:
-        y2 = df_gt["img_stdev"].values + 1
+        y2 = df_gt["cyst_stdev"].values + 1
         plt.scatter(x, y2, c="gray", s=1)
-        y3 = -df_gt["img_stdev"].values + 1
+        y3 = -df_gt["cyst_stdev"].values + 1
         plt.scatter(x, y3, c="gray", s=1)
 
 #create plot

@@ -26,16 +26,16 @@ def getListOfFiles(dirName):
 def findAndMerge(filelist):
     # Prepare a dataframe
     df_out = pd.DataFrame()
-    ImageNumber = 1
+    CystNumber = 1
     for file in filelist:
         file_name = ntpath.basename(file)
         dir_name = ntpath.dirname(file)
-        #when finding a DNA content results file at the data to the dataframe, adjust image number
+        #when finding a DNA content results file at the data to the dataframe, adjust cyst number
         if " DNA content.xls" in file_name:
             df_cells = pd.read_csv(file, sep='\t')
-            df_cells["ImageNumber"] = ImageNumber
+            df_cells["CystNumber"] = CystNumber
             df_out = df_out.append(df_cells, sort=False, ignore_index=True)
-            ImageNumber = ImageNumber + 1
+            CystNumber = CystNumber + 1
             print("I found results table " + file_name)
     return df_out
 
