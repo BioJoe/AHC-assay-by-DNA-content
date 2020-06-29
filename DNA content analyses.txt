@@ -20,13 +20,12 @@ macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 		}
 		Stack.setDisplayMode("grayscale");
 	}
-
 	//create MIP
 	run("Z Project...", "projection=[Max Intensity]");
 	run("Enhance Contrast", "saturated=0.05");
 	MIP = getImageID();
 
-	//define cyst and save cyst ROI
+	//define cyst and save cyst ROI	
 	setTool("freehand");
 	waitForUser("Define cyst ROI");
 	roiManager("Add");
@@ -57,6 +56,7 @@ macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 			resetMinAndMax;
 			run("Apply LUT", "slice");
 	}
+	Stack.setDisplayMode("composite");
 	saveAs("Tiff", dir+name +" cyst MIP.tif");
 
 	//remove all channels except the first
@@ -70,6 +70,7 @@ macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 	//identify nuclei and display
 	run("Select None");
 	run("8-bit");
+	run("Grays");
 	//next line is to set background to black in options for processing binary images
 	run("Options...", "iterations=1 count=1 black do=Nothing");
 	run("Auto Local Threshold", "method=Mean radius=15 parameter_1=0 parameter_2=0 white");
@@ -93,6 +94,7 @@ macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 	roiManager("Select", 0);
 	roiManager("Delete");
 	open(dir+name +" cyst MIP.tif");
+	Stack.setDisplayMode("grayscale");
 	roiManager("Show All");
 	run("Tile");
 	waitForUser("Check ROIs. Delete cyst cell ROIs. Make sure all edits are in ROI manager.");
@@ -147,7 +149,7 @@ macro "measure DNA content Action Tool - C606 O02gf V2477 T0206M " {
 	open(dir+baseName +" nuclei ROIs.zip");
 
 	//set measurements
-	run("Set Measurements...", "area mean integrated display redirect=None decimal=3");
+	run("Set Measurements...", "integrated display redirect=None decimal=3");
 
 	//remove ROIs added by user
 	N=roiManager("count");
