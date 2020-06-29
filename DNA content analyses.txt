@@ -10,20 +10,12 @@ macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 	name = name_array[0]
 	print("loaded image " + name);
 
-	//set colors to blue green red
-	if (channels > 1) {
-		color_array = newArray("Blue", "Green", "Red");
-		for (i=0; i<channels; i++){
-			Stack.setChannel(i+1);
-			run(color_array[i]);
-			run("Enhance Contrast", "saturated=0.05");
-		}
-		Stack.setDisplayMode("grayscale");
-	}
 	//create MIP
 	run("Z Project...", "projection=[Max Intensity]");
 	run("Enhance Contrast", "saturated=0.05");
+	Stack.setDisplayMode("grayscale");
 	MIP = getImageID();
+	
 
 	//define cyst and save cyst ROI	
 	setTool("freehand");
@@ -56,7 +48,6 @@ macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 			resetMinAndMax;
 			run("Apply LUT", "slice");
 	}
-	Stack.setDisplayMode("composite");
 	saveAs("Tiff", dir+name +" cyst MIP.tif");
 
 	//remove all channels except the first
@@ -70,7 +61,6 @@ macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 	//identify nuclei and display
 	run("Select None");
 	run("8-bit");
-	run("Grays");
 	//next line is to set background to black in options for processing binary images
 	run("Options...", "iterations=1 count=1 black do=Nothing");
 	run("Auto Local Threshold", "method=Mean radius=15 parameter_1=0 parameter_2=0 white");
@@ -94,7 +84,6 @@ macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 	roiManager("Select", 0);
 	roiManager("Delete");
 	open(dir+name +" cyst MIP.tif");
-	Stack.setDisplayMode("grayscale");
 	roiManager("Show All");
 	run("Tile");
 	waitForUser("Check ROIs. Delete cyst cell ROIs. Make sure all edits are in ROI manager.");
