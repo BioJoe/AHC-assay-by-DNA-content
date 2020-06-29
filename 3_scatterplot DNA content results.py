@@ -37,6 +37,7 @@ for gt in ls_gt:
 #create figure
 axis = [0, max_cells, 0, 3]
 plt.figure(figsize=(6,10))
+plt.rcParams.update({'font.size': 18})
 pos=1
 
 for gt in ls_gt:
@@ -66,7 +67,7 @@ for gt in ls_gt:
     #add standard deviation to the plot titles
     if stdev_in_head:
         gt_stdev = df_gt.loc[(df_gt['genotype'] == gt) & (df_gt['ObjectNumber'] == 1), 'mean_cyst_stdev'].values[0]
-        plt.title(gt + " (stdev: " + str(round(gt_stdev,2)) + ')')
+        plt.title(gt + " (stdev: " + str(round(gt_stdev,2)) + ')', pad=15)
         
     #add cyst labels to plot
     if cystnumber_in_plot:
