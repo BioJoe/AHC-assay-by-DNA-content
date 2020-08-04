@@ -66,6 +66,6 @@ while(go_on):
 df_merged.columns.values[[0]] = ["ObjectNumber"]
 
 #save
-save_path = filedialog.asksaveasfilename(title='Save compiled results as ...',defaultextension = '.xlsx',initialdir = dirName, initialfile = "compiled DNA content results");
+save_path = filedialog.asksaveasfilename(title='Save compiled results as ...',defaultextension = '.xlsx',initialdir = dirName, initialfile = "compiled DNA content results")
 df_merged.to_excel(save_path, index=False)
 print('done')
