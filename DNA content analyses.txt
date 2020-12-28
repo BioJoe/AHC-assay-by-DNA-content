@@ -13,11 +13,13 @@ macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 	//create MIP
 	run("Z Project...", "projection=[Max Intensity]");
 	run("Enhance Contrast", "saturated=0.05");
-	Stack.setDisplayMode("grayscale");
+	if (channels > 1){
+		Stack.setDisplayMode("grayscale");
+	}
 	MIP = getImageID();
-	
 
-	//define cyst and save cyst ROI	
+
+	//define cyst and save cyst ROI
 	setTool("freehand");
 	waitForUser("Define cyst ROI");
 	roiManager("Add");
@@ -109,7 +111,7 @@ macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 				roiManager("Rename", ROIname);
 				userROIs = userROIs+1;
 			}
-		}		
+		}
 	}
 	selectWindow("Overlay Elements");
 	run("Close");
@@ -199,7 +201,7 @@ macro "measure DNA content in subfolders Action Tool - C606 O02gf V2477 T0206M T
 				print("Searching in " + cur_dir);
 				listFiles(cur_dir);
 				}
-			else if (endsWith(list[j], "cyst MIP.tif")){ 
+			else if (endsWith(list[j], "cyst MIP.tif")){
 				titleInput=list[j];
 				baseNameEnd=indexOf(titleInput, " cyst MIP.tif");
 				baseName=substring(titleInput, 0, baseNameEnd);
@@ -210,12 +212,12 @@ macro "measure DNA content in subfolders Action Tool - C606 O02gf V2477 T0206M T
 					measureDNA(path,cur_dir,baseName);
 				}
 				else if (File.exists(cur_dir+baseName+" nuclei ROIs.zip") && File.exists(cur_dir+baseName+" DNA content.xls")){
-					print(list[j] + " has already been already measure. I will not do that again."); 
+					print(list[j] + " has already been already measure. I will not do that again.");
 				}
-			}	
+			}
 		}
 	}
-				
+
 	function measureDNA(path,cur_dir,baseName){
 		//open original and create maximum intensity projection and nuclei ROIs
 		open(path);
@@ -241,7 +243,7 @@ macro "measure DNA content in subfolders Action Tool - C606 O02gf V2477 T0206M T
 		}
 		selectWindow("Overlay Elements");
 		run("Close");
-		
+
 
 		//measure ROIs
 		N=roiManager("count");
@@ -251,7 +253,7 @@ macro "measure DNA content in subfolders Action Tool - C606 O02gf V2477 T0206M T
 		//calculate normalized values and add to results table
 		run("Summarize");
 		Mean_signal =  getResult("RawIntDen", N);
-		
+
 		for (n=0; n<N ; n++){
 			norm_signal = getResult("RawIntDen", n)/Mean_signal;
 			setResult("norm signal", n, norm_signal);
