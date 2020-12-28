@@ -1,5 +1,8 @@
 macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 
+	//parameters
+	DNA_channel_number = 1
+
 	//load image stack
 	path = File.openDialog("Select a .czi image stack file");
 	open(path);
@@ -52,11 +55,13 @@ macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 	}
 	saveAs("Tiff", dir+name +" cyst MIP.tif");
 
-	//remove all channels except the first
+	//remove all channels except the DNA channel
 	if (channels > 1){
-		run("Split Channels");
-		for (i=1; i<channels; i++){
-			close();
+		for (i = channels; i > 0; i = i-1){
+			if (i =! DNA_channel_number){
+				Stack.setChannel(i);
+				run("Delete Slice", "delete=channel");
+				}
 		}
 	}
 
