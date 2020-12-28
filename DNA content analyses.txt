@@ -15,10 +15,11 @@ macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 
 	//create MIP
 	run("Z Project...", "projection=[Max Intensity]");
-	run("Enhance Contrast", "saturated=0.05");
 	if (channels > 1){
 		Stack.setDisplayMode("grayscale");
+		Stack.setChannel(DNA_channel_number);
 	}
+	run("Enhance Contrast", "saturated=0.05");
 	MIP = getImageID();
 
 
@@ -58,7 +59,7 @@ macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 	//remove all channels except the DNA channel
 	if (channels > 1){
 		for (i = channels; i > 0; i = i-1){
-			if (i =! DNA_channel_number){
+			if (i != DNA_channel_number){
 				Stack.setChannel(i);
 				run("Delete Slice", "delete=channel");
 				}
@@ -91,6 +92,9 @@ macro "identify nuclei Action Tool - C606 O02gf V2477 T0206I " {
 	roiManager("Select", 0);
 	roiManager("Delete");
 	open(dir+name +" cyst MIP.tif");
+	if (channels > 1){
+		Stack.setChannel(DNA_channel_number);
+	}
 	roiManager("Show All");
 	run("Tile");
 	waitForUser("Check ROIs. Delete cyst cell ROIs. Make sure all edits are in ROI manager.");
